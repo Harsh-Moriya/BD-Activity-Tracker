@@ -262,7 +262,6 @@ function buildStatsSheet(
 ): WS {
   const total = activities.length
   const completed = activities.filter(a => a.status === 'Completed').length
-  const rate = total > 0 ? Math.round((completed / total) * 100) : 0
 
   const byType: Record<string, number> = {}
   ACTIVITY_TYPES.forEach(t => { byType[t] = 0 })
@@ -304,7 +303,6 @@ function buildStatsSheet(
   pushSection('SUMMARY')
   pushData('Total Activities', total)
   pushData('Completed', completed)
-  pushData('Completion Rate', `${rate}%`)
   pushEmpty()
   pushSection('BY TYPE')
   ACTIVITY_TYPES.forEach(t => { if (byType[t] > 0) pushData(t, byType[t]) })

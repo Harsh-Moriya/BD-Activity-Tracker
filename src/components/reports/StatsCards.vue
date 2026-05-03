@@ -11,12 +11,6 @@ const props = defineProps<{
 
 const total = computed(() => props.activities.length)
 
-const completed = computed(() => props.activities.filter(a => a.status === 'Completed').length)
-
-const completionRate = computed(() =>
-  total.value > 0 ? Math.round((completed.value / total.value) * 100) : 0
-)
-
 const byType = computed(() => {
   const map: Record<string, number> = {}
   ACTIVITY_TYPES.forEach(t => { map[t] = 0 })
@@ -54,18 +48,11 @@ const TYPE_COLORS: Record<string, string> = {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <!-- Total -->
     <div class="rounded-lg border border-border bg-card p-4">
       <p class="text-sm text-muted-foreground">Total Activities</p>
       <p class="mt-1 text-3xl font-bold text-foreground">{{ total }}</p>
-    </div>
-
-    <!-- Completion Rate -->
-    <div class="rounded-lg border border-border bg-card p-4">
-      <p class="text-sm text-muted-foreground">Completion Rate</p>
-      <p class="mt-1 text-3xl font-bold text-foreground">{{ completionRate }}%</p>
-      <p class="mt-1 text-xs text-muted-foreground">{{ completed }} of {{ total }} completed</p>
     </div>
 
     <!-- By Type -->
