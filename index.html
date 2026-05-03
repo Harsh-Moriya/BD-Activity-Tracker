@@ -5,9 +5,113 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BD Activity Tracker</title>
+    <style>
+      html, body { margin: 0; padding: 0; height: 100%; }
+
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        background: #f8fafc;
+        transition: opacity 0.4s ease;
+      }
+
+      #splash-logo {
+        animation: splash-float 3s ease-in-out infinite;
+        filter: drop-shadow(0 10px 28px rgba(37, 99, 235, 0.28));
+      }
+      @keyframes splash-float {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-7px); }
+      }
+
+      #splash-name {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+
+      #splash-dots {
+        display: flex;
+        gap: 8px;
+      }
+      #splash-dots span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #2563eb;
+        opacity: 0.25;
+        animation: splash-pulse 1.4s ease-in-out infinite;
+      }
+      #splash-dots span:nth-child(2) { animation-delay: 0.18s; }
+      #splash-dots span:nth-child(3) { animation-delay: 0.36s; }
+      @keyframes splash-pulse {
+        0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+        40%            { opacity: 1;    transform: scale(1);   }
+      }
+
+      /* Dark overrides — applied instantly by the inline script below */
+      html[data-splash-theme="dark"] #splash           { background: #0f172a; }
+      html[data-splash-theme="dark"] #splash-name      { color: #94a3b8; }
+      html[data-splash-theme="dark"] #splash-dots span { background: #60a5fa; }
+      html[data-splash-theme="dark"] #splash-logo      {
+        filter: drop-shadow(0 10px 28px rgba(96, 165, 250, 0.32));
+      }
+    </style>
+
+    <!--
+      Runs before first paint: reads stored theme, sets the page background and
+      a data attribute that the CSS rules above immediately pick up.
+      Prevents any white flash on load.
+    -->
+    <script>
+      (function () {
+        var t = localStorage.getItem('bd-tracker-theme') || 'system';
+        var dark = t === 'dark' ||
+          (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.style.background = dark ? '#0f172a' : '#f8fafc';
+        document.documentElement.setAttribute('data-splash-theme', dark ? 'dark' : 'light');
+      })();
+    </script>
   </head>
 
   <body>
+    <div id="splash">
+      <div id="splash-logo">
+        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bd-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"   stop-color="#1B3A6B"/>
+              <stop offset="100%" stop-color="#2563EB"/>
+            </linearGradient>
+          </defs>
+          <rect width="80" height="80" rx="18" fill="url(#bd-grad)"/>
+          <text
+            x="40" y="50"
+            font-family="Arial, sans-serif"
+            font-weight="bold"
+            font-size="30"
+            fill="white"
+            text-anchor="middle"
+            dominant-baseline="middle"
+          >BD</text>
+          <rect x="20" y="60" width="40" height="3.5" rx="1.75" fill="rgba(255,255,255,0.32)"/>
+        </svg>
+      </div>
+      <div id="splash-name">BD Activity Tracker</div>
+      <div id="splash-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

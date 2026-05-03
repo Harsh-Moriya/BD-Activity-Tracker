@@ -10,3 +10,9 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+const splash = document.getElementById('splash')
+if (splash) {
+  splash.addEventListener('transitionend', () => splash.remove(), { once: true })
+  setTimeout(() => { splash.style.opacity = '0' }, 80)
+}
