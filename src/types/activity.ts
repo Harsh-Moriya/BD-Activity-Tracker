@@ -23,6 +23,9 @@ export type ActivityStatus =
 
 export type Direction = 'Inbound' | 'Outbound'
 
+export type SortField = 'scheduled_at' | 'completed_at' | 'created_at'
+export type SortDir   = 'asc' | 'desc'
+
 export const ACTIVITY_TYPES: ActivityType[] = [
   'Call', 'Meeting', 'Email', 'LinkedIn Message', 'WhatsApp Message',
   'Demo', 'Proposal', 'Contract', 'Other',
@@ -75,6 +78,8 @@ export interface ActivityFilters {
   statuses: ActivityStatus[]
   organizationId: number | null
   searchQuery: string
+  sortField: SortField
+  sortDir: SortDir
 }
 
 export function emptyFilters(): ActivityFilters {
@@ -85,6 +90,8 @@ export function emptyFilters(): ActivityFilters {
     statuses: [],
     organizationId: null,
     searchQuery: '',
+    sortField: 'scheduled_at',
+    sortDir: 'desc',
   }
 }
 

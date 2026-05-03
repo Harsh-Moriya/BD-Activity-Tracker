@@ -20,7 +20,8 @@ export const useActivitiesStore = defineStore('activities', () => {
   // ── Getters ──────────────────────────────────────────────────────────
   const filteredActivities = computed(() => {
     const f = filters.value
-    return items.value.filter((a) => {
+
+    const filtered = items.value.filter((a) => {
       if (f.types.length && !f.types.includes(a.type)) return false
       if (f.statuses.length && !f.statuses.includes(a.status)) return false
       if (f.organizationId !== null && a.organization_id !== f.organizationId) return false
@@ -35,6 +36,14 @@ export const useActivitiesStore = defineStore('activities', () => {
         if (!haystack.includes(q)) return false
       }
       return true
+    })
+
+    // Client-side sort — fall back to created_at when the chosen field is null
+    return [...filtered].sort((a, b) => {
+      const aVal = a[f.sortField] ?? a.created_at
+      const bVal = b[f.sortField] ?? b.created_at
+      const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+      return f.sortDir === 'asc' ? cmp : -cmp
     })
   })
 

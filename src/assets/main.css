@@ -27,8 +27,8 @@
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
+    --border: oklch(0.872 0 0);
+    --input: oklch(0.872 0 0);
     --ring: oklch(0.708 0 0);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
@@ -42,7 +42,7 @@
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-border: oklch(0.872 0 0);
     --sidebar-ring: oklch(0.708 0 0)
   }
   .dark {
@@ -97,4 +97,41 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ── Thin scrollbars (native browser/WebView scrollbars) ──────────────────
+   Applied to overflow-auto/scroll containers that use native scrollbars
+   (e.g. the Log Activity form's scrollable body).
+   The shadcn ScrollArea component is handled separately via ScrollBar.vue.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* WebKit / Chromium / Tauri WebView2 */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.556 0 0 / 30%);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.556 0 0 / 55%);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(1 0 0 / 20%);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(1 0 0 / 40%);
+}
+
+/* Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.556 0 0 / 30%) transparent;
+}
+.dark body {
+  scrollbar-color: oklch(1 0 0 / 20%) transparent;
 }

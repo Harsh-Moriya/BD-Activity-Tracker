@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useActivitiesStore } from '@/stores/activities.store'
-import type { ActivityType, ActivityStatus } from '@/types/activity'
+import type { ActivityType, ActivityStatus, SortField } from '@/types/activity'
 
 export function useActivityFilters() {
   const store = useActivitiesStore()
@@ -30,6 +30,14 @@ export function useActivityFilters() {
     store.setFilters({ statuses })
   }
 
+  function setSortField(field: SortField) {
+    store.setFilters({ sortField: field })
+  }
+
+  function toggleSortDir() {
+    store.setFilters({ sortDir: store.filters.sortDir === 'asc' ? 'desc' : 'asc' })
+  }
+
   return {
     filters: computed(() => store.filters),
     activeFilterCount,
@@ -37,5 +45,7 @@ export function useActivityFilters() {
     resetFilters: store.resetFilters,
     toggleType,
     toggleStatus,
+    setSortField,
+    toggleSortDir,
   }
 }
