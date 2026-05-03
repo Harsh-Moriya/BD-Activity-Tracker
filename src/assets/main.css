@@ -1,17 +1,23 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
 @import "tw-animate-css";
 @import "shadcn-vue/tailwind.css";
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./fonts/Geist-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  .theme {
-    --font-sans: 'Geist Variable', sans-serif;
-    --font-heading: var(--font-sans)}
   :root {
+    --font-sans: 'Geist', sans-serif;
+    --font-heading: var(--font-sans);
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
