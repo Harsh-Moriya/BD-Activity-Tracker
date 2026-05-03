@@ -30,8 +30,10 @@ function weekBounds(weeksBack: number): { from: string; to: string } {
 }
 
 function inRange(a: Activity, range: { from: string; to: string }): boolean {
-  const d = actDate(a)
-  return d >= range.from && d <= range.to + 'T23:59:59Z'
+  const end = range.to + 'T23:59:59Z'
+  if (a.scheduled_at && a.scheduled_at >= range.from && a.scheduled_at <= end) return true
+  if (a.completed_at && a.completed_at >= range.from && a.completed_at <= end) return true
+  return false
 }
 
 // ── Palette ───────────────────────────────────────────────────────────────────
@@ -131,12 +133,8 @@ function buildWeeklySheet(
   const orgName = (a: Activity) =>
     a.organization_id ? (orgFn(a.organization_id)?.name ?? '') : ''
 
-  const lastDone = allActivities.filter(
-    a => inRange(a, lastWeek) && a.status === 'Completed',
-  )
-  const thisPlanned = allActivities.filter(
-    a => inRange(a, thisWeek) && (a.status === 'Planned' || a.status === 'Follow-up Required'),
-  )
+  const lastDone = allActivities.filter(a => inRange(a, lastWeek))
+  const thisPlanned = allActivities.filter(a => inRange(a, thisWeek))
 
   const rows: (string | number)[][] = []
   const merges: { s: { r: number; c: number }; e: { r: number; c: number } }[] = []
@@ -169,11 +167,11 @@ function buildWeeklySheet(
   }
   const pushEmpty = () => { rows.push(Array(WEEKLY_NCOLS).fill('')); kinds.push('empty') }
 
-  pushTitle(`LAST WEEK: COMPLETED  (${fmtDate(lastWeek.from)} – ${fmtDate(lastWeek.to)})`)
+  pushTitle(`LAST WEEK  (${fmtDate(lastWeek.from)} – ${fmtDate(lastWeek.to)})`)
   pushColHdrs()
   pushData(lastDone, '(no completed activities last week)')
   pushEmpty()
-  pushTitle(`THIS WEEK: PLANNED  (${fmtDate(thisWeek.from)} – ${fmtDate(thisWeek.to)})`)
+  pushTitle(`THIS WEEK  (${fmtDate(thisWeek.from)} – ${fmtDate(thisWeek.to)})`)
   pushColHdrs()
   pushData(thisPlanned, '(no planned activities this week)')
 
