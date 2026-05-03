@@ -121,7 +121,7 @@ function statusPillClass(status: ActivityStatus) {
         variant="ghost"
         size="icon"
         class="h-8 w-8 shrink-0"
-        :title="filters.sortDir === 'asc' ? 'Ascending — click for descending' : 'Descending — click for ascending'"
+        :title="filters.sortDir === 'asc' ? 'Ascending: click for descending' : 'Descending: click for ascending'"
         @click="toggleSortDir"
       >
         <ArrowUp v-if="filters.sortDir === 'asc'" class="h-3.5 w-3.5" />
