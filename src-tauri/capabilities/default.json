@@ -11,9 +11,12 @@
     "sql:allow-select",
     "dialog:default",
     "fs:default",
+    "fs:allow-write-file",
     "fs:scope-appdata-recursive",
     "fs:scope-document-recursive",
     "fs:scope-download-recursive",
+    "fs:scope-desktop-recursive",
+    "fs:scope-home-recursive",
     "shell:default",
     "shell:allow-open"
   ]
