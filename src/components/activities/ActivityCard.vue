@@ -43,6 +43,7 @@ import {
 import {
   Building2,
   Calendar,
+  CornerUpLeft,
   MoreHorizontal,
   Pencil,
   GitBranch,
@@ -75,6 +76,12 @@ const typeCards: Record<ActivityType, Component> = {
 const orgName = computed(() =>
   props.activity.organization_id
     ? (orgsStore.orgById(props.activity.organization_id)?.name ?? null)
+    : null,
+)
+
+const parentActivity = computed(() =>
+  props.activity.parent_activity_id
+    ? (activitiesStore.items.find(a => a.id === props.activity.parent_activity_id) ?? null)
     : null,
 )
 
@@ -185,6 +192,15 @@ async function confirmDelete() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+    </div>
+
+    <!-- Follow-up indicator -->
+    <div
+      v-if="parentActivity"
+      class="flex items-center gap-1 text-xs text-muted-foreground"
+    >
+      <CornerUpLeft class="h-3 w-3 shrink-0" />
+      <span>Follow-up of: <span class="font-medium truncate">{{ parentActivity.title }}</span></span>
     </div>
 
     <!-- Meta row: org + date -->

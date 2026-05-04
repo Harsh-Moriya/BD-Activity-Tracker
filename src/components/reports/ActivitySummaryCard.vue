@@ -1,14 +1,25 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { Activity } from '@/types/activity'
 import TypeIcon from '@/components/activities/TypeIcon.vue'
 import StatusBadge from '@/components/activities/StatusBadge.vue'
 import { TYPE_ACCENT_BORDER } from '@/lib/activity-styles'
+import { useActivitiesStore } from '@/stores/activities.store'
 import { format } from 'date-fns'
+import { CornerUpLeft } from 'lucide-vue-next'
 
 const props = defineProps<{
   activity: Activity
   orgName: string | null
 }>()
+
+const activitiesStore = useActivitiesStore()
+
+const parentActivity = computed(() =>
+  props.activity.parent_activity_id
+    ? (activitiesStore.items.find(a => a.id === props.activity.parent_activity_id) ?? null)
+    : null,
+)
 
 function fmtDate(iso: string | null | undefined): string {
   if (!iso) return ''
@@ -34,6 +45,10 @@ const date = props.activity.scheduled_at ?? props.activity.completed_at ?? null
         <StatusBadge :status="activity.status" />
         <span v-if="orgName" class="text-xs text-muted-foreground truncate">{{ orgName }}</span>
         <span v-if="activity.contact_name" class="text-xs text-muted-foreground">· {{ activity.contact_name }}</span>
+      </div>
+      <div v-if="parentActivity" class="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+        <CornerUpLeft class="h-3 w-3 shrink-0" />
+        <span>Follow-up of: <span class="font-medium">{{ parentActivity.title }}</span></span>
       </div>
       <p v-if="activity.notes || activity.outcome" class="mt-1 text-xs text-muted-foreground line-clamp-2">
         {{ activity.outcome || activity.notes }}
