@@ -40,7 +40,7 @@ onUnmounted(() => {
 
 <template>
   <TooltipProvider :delay-duration="300">
-    <div class="flex h-screen w-screen overflow-hidden bg-background text-foreground">
+    <div class="flex h-screen w-screen overflow-hidden bg-background text-foreground border border-border">
       <AppSidebar />
       <ScrollArea class="flex-1">
         <main class="min-h-screen">

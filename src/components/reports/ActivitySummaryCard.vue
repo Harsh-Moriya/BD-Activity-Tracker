@@ -19,20 +19,18 @@ const date = props.activity.scheduled_at ?? props.activity.completed_at ?? null
 </script>
 
 <template>
-  <div
-    class="flex items-start gap-3 rounded-lg border border-border bg-card p-3 text-sm"
-    :class="TYPE_ACCENT_BORDER[activity.type]"
-    style="border-left-width: 3px"
-  >
-    <div class="mt-0.5 shrink-0">
-      <TypeIcon :type="activity.type" class="h-4 w-4 text-muted-foreground" />
-    </div>
+  <div class="flex items-start gap-3 rounded-lg border border-border bg-card p-3 text-sm"
+    :class="TYPE_ACCENT_BORDER[activity.type]" style="border-left-width: 3px">
+
     <div class="min-w-0 flex-1">
       <div class="flex items-start justify-between gap-2">
-        <p class="font-medium text-foreground truncate">{{ activity.title }}</p>
+        <div class="space-x-2.5 flex items-center">
+          <TypeIcon :type="activity.type" class="h-4 w-4 text-muted-foreground" />
+          <p class="font-medium text-foreground truncate">{{ activity.title }}</p>
+        </div>
         <span class="shrink-0 text-xs text-muted-foreground">{{ fmtDate(date) }}</span>
       </div>
-      <div class="mt-1 flex flex-wrap items-center gap-1.5">
+      <div class="mt-2 flex flex-wrap items-center gap-1.5">
         <StatusBadge :status="activity.status" />
         <span v-if="orgName" class="text-xs text-muted-foreground truncate">{{ orgName }}</span>
         <span v-if="activity.contact_name" class="text-xs text-muted-foreground">· {{ activity.contact_name }}</span>
